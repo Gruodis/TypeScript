@@ -1,18 +1,10 @@
-var __spreadArray = (this && this.__spreadArray) || function (to, from, pack) {
-    if (pack || arguments.length === 2) for (var i = 0, l = from.length, ar; i < l; i++) {
-        if (ar || !(i in from)) {
-            if (!ar) ar = Array.prototype.slice.call(from, 0, i);
-            ar[i] = from[i];
-        }
-    }
-    return to.concat(ar || Array.prototype.slice.call(from));
-};
+"use strict";
 function getNetPrice(price, discount, format) {
-    var netPrice = price - discount;
-    return format ? "$".concat(netPrice) : netPrice;
+    let netPrice = price - discount;
+    return format ? `$${netPrice}` : netPrice;
 }
-var netPriceNumber = getNetPrice(40, 10, false);
-var netPriceString = getNetPrice(40, 10, true);
+const netPriceNumber = getNetPrice(40, 10, false);
+const netPriceString = getNetPrice(40, 10, true);
 console.log(netPriceString, typeof netPriceString);
 console.log(netPriceNumber, typeof netPriceNumber);
 //////////////////
@@ -21,23 +13,23 @@ console.log(netPriceNumber, typeof netPriceNumber);
 // cloning object or array literals
 // Use generics to define type
 function cloneFun(value) {
-    var json = JSON.stringify(value);
+    const json = JSON.stringify(value);
     return JSON.parse(json);
 }
-var cloneArrow = function (value) {
-    var json = JSON.stringify(value);
+const cloneArrow = (value) => {
+    const json = JSON.stringify(value);
     return JSON.parse(json);
 };
-var personeMe = {
+const personeMe = {
     name: "Aure",
     age: 44,
 };
-var myClone = cloneArrow(personeMe);
+const myClone = cloneArrow(personeMe);
 // Output
 console.log(myClone.age, myClone.name);
 // Array
-var city = ["Tokyo", "Bali", "Mexico City", "Vancouver"];
-var cloneCity = cloneArrow(city);
+const city = ["Tokyo", "Bali", "Mexico City", "Vancouver"];
+const cloneCity = cloneArrow(city);
 // Addd city to warray
 cloneCity.push("Vilnius");
 //Output clone
@@ -47,15 +39,15 @@ cloneCity.push("Vilnius");
 //////////
 // Type narrowing
 /////////
-var reverseArrow = function (value) {
+const reverseArrow = (value) => {
     if (typeof value === "string") {
         return value.split("").reverse().join("");
     }
     else {
-        return __spreadArray([], value, true).reverse();
+        return [...value].reverse();
     }
 };
 // Output
-var reversedString = reverseArrow("hello"); // reversedString will be "olleh"
-var reversedArray = reverseArrow(["a", "b", "c"]); // reversedArray will be ["c", "b", "a"]
+const reversedString = reverseArrow("hello"); // reversedString will be "olleh"
+const reversedArray = reverseArrow(["a", "b", "c"]); // reversedArray will be ["c", "b", "a"]
 console.log(reversedString, reversedArray);
