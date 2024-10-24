@@ -12,10 +12,11 @@ console.log(netPriceNumber, typeof netPriceNumber);
 /////////////////
 // cloning object or array literals
 // Use generics to define type
-function cloneFun(value) {
-    const json = JSON.stringify(value);
-    return JSON.parse(json);
-}
+
+// function cloneFun(value) {
+//     const json = JSON.stringify(value);
+//     return JSON.parse(json);
+// }
 const cloneArrow = (value) => {
     const json = JSON.stringify(value);
     return JSON.parse(json);
