@@ -13,12 +13,12 @@ console.log(dalyba(4, 8)); // Output: 4
 // display result insede element with id result
 // when window is loaded
 window.onload = () => {
-    const htmlResult = document.getElementById("output");
+    const htmlResult = document.getElementById('output');
     if (htmlResult) {
         // Access properties and methods of the div element
         htmlResult.textContent = `The GCD of ${num1} and ${num2} is ${result}`;
     }
     else {
-        console.error("Div element not found!");
+        console.error('Div element not found!');
     }
 };

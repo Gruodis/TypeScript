@@ -138,7 +138,22 @@ howOld.onclick = () => {
 };
 
 window.onload = () => {
+    function oscarBirthDate() {
+        // Call calculateAge here
+        const age = calculateAge(new Date('2024-07-14'));
+
+        const div = document.createElement('div');
+        div.textContent = `bDay: ${age}`;
+        const htmlResult = document.getElementById('output') as HTMLDivElement;
+        if (htmlResult) {
+            htmlResult.appendChild(div);
+        } else {
+            console.error('Div element not found!');
+        }
+        return div;
+    }
+    oscarBirthDate();
     handleVisitorAction(visitor, 'entered');
     handleVisitorAction(visitor, 'left');
-    console.log('Page loaded', calculateAge(new Date('2024-07-14')));
+    console.log('Age fixed', calculateAge(new Date('2024-07-14')));
 };
