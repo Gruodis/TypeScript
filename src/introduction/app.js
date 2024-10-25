@@ -1,4 +1,4 @@
-"use strict";
+import './assets/css/style.scss';
 // function getNetPrice(
 //   price: number,
 //   discount: number,

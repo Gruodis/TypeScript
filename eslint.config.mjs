@@ -15,6 +15,7 @@ const config = {
         },
         globals: {
             ...globals.browser,
+            process: true,
         },
     },
     ignores: ['src/**/*.js', '*.mjs'],
@@ -39,8 +40,4 @@ const prettierConfig = {
     },
 };
 
-export default [
-    config,
-    tsConfig,
-    prettierConfig,
-];
+export default [config, tsConfig, prettierConfig];
