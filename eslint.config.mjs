@@ -1,18 +1,43 @@
 // @ts-check
 
 import eslint from '@eslint/js';
-import tseslint from 'typescript-eslint';
-import globals from 'globals'; // Import the globals package
+import tseslint from '@typescript-eslint/eslint-plugin';
+import tsParser from '@typescript-eslint/parser';
+import globals from 'globals';
+import prettier from 'eslint-plugin-prettier'; // Import the prettier plugin
 
 const config = {
-    ...eslint.configs.recommended, // Extend the recommended config
+    ...eslint.configs.recommended,
     languageOptions: {
-        // Use languageOptions.globals
+        parser: tsParser,
+        parserOptions: {
+            project: './tsconfig.json',
+        },
         globals: {
             ...globals.browser,
+            process: true,
         },
     },
-    // Add other configuration options if needed (e.g., parserOptions, plugins, rules)
+    ignores: ['src/**/*.js', '*.mjs'],
 };
 
-export default tseslint.config(config, ...tseslint.configs.recommended);
+const tsConfig = {
+    files: ['**/*.ts', '**/*.tsx'],
+    plugins: {
+        '@typescript-eslint': tseslint,
+    },
+    rules: {
+        ...tseslint.configs.recommended.rules,
+    },
+};
+
+const prettierConfig = {
+    plugins: {
+        prettier: prettier, // Include the prettier plugin object
+    },
+    rules: {
+        'prettier/prettier': 'warn',
+    },
+};
+
+export default [config, tsConfig, prettierConfig];

@@ -1,6 +1,6 @@
 "use strict";
 function getNetPrice(price, discount, format) {
-    let netPrice = price - discount;
+    const netPrice = price - discount;
     return format ? `$${netPrice}` : netPrice;
 }
 const netPriceNumber = getNetPrice(40, 10, false);
@@ -11,9 +11,8 @@ console.log(netPriceNumber, typeof netPriceNumber);
 // generics
 /////////////////
 // cloning object or array literals
-// Use generics to define type
-
-// function cloneFun(value) {
+// Use generics<Type> <T> or <YouCanCallAnything> to define type
+// function cloneFun<Type>(value: Type): Type {
 //     const json = JSON.stringify(value);
 //     return JSON.parse(json);
 // }
@@ -23,7 +22,7 @@ const cloneArrow = (value) => {
 };
 const personeMe = {
     name: 'Aure',
-    age: 44
+    age: 44,
 };
 const myClone = cloneArrow(personeMe);
 // Output
@@ -36,7 +35,7 @@ cloneCity.push('Vilnius');
 //Output clone
 //cloneCity.forEach(citytas => console.log(citytas));
 //Original array not changed
-//city.forEach(citytas => console.log(citytas)); 
+//city.forEach(citytas => console.log(citytas));
 //////////
 // Type narrowing
 /////////
@@ -49,12 +48,12 @@ const reverseArrow = (value) => {
     }
 };
 // Output
-const reversedString = reverseArrow("hello"); // reversedString will be "olleh"
-const reversedArray = reverseArrow(["a", "b", "c"]); // reversedArray will be ["c", "b", "a"]
+const reversedString = reverseArrow('hello'); // reversedString will be "olleh"
+const reversedArray = reverseArrow(['a', 'b', 'c']); // reversedArray will be ["c", "b", "a"]
 console.log(reversedString, reversedArray);
 const factorial = (n) => {
     if (n < 0) {
-        throw new Error("Factorial is not defined for negative numbers.");
+        throw new Error('Factorial is not defined for negative numbers.');
     }
     if (n === 0 || n === 1) {
         return 1;
