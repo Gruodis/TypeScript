@@ -51,8 +51,8 @@ const points: Axis = {
   y: 5,
 };
 
-const inputXAxis = document.getElementById("xAxis") as HTMLInputElement;
-const inputYAxis = document.getElementById("yAxis") as HTMLInputElement;
+const inputXAxis = <HTMLInputElement> document.getElementById("xAxis");
+const inputYAxis = <HTMLInputElement> document.getElementById("yAxis");
 const button = document.getElementById("calculate") as HTMLButtonElement;
 
 if (button && inputXAxis && inputYAxis) {
