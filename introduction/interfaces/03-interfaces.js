@@ -33,8 +33,8 @@ const getDistance = (points) => {
     return div;
 };
 const points = {
-    x: 5,
-    y: 5,
+    x: 0,
+    y: 0,
 };
 const inputXAxis = document.getElementById("xAxis");
 const inputYAxis = document.getElementById("yAxis");

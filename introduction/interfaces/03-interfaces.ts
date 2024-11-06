@@ -47,13 +47,13 @@ const getDistance = (points: Axis): HTMLDivElement => {
 };
 
 const points: Axis = {
-  x: 5,
-  y: 5,
+  x: 0,
+  y: 0,
 };
 
 const inputXAxis = <HTMLInputElement> document.getElementById("xAxis");
 const inputYAxis = <HTMLInputElement> document.getElementById("yAxis");
-const button = document.getElementById("calculate") as HTMLButtonElement;
+const button = <HTMLButtonElement> document.getElementById("calculate");
 
 if (button && inputXAxis && inputYAxis) {
     inputXAxis.oninput = () => {
