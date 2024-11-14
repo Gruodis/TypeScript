@@ -20,7 +20,7 @@ let visitor = {
     age: 44,
 };
 const getDistance = (points) => {
-    const xDiff = Math.sqrt(Math.pow(points.x, 2) + Math.pow(points.y, 2));
+    const xDiff = Math.sqrt(points.x ** 2 + points.y ** 2);
     const div = document.createElement("div");
     div.textContent = `xDiff: ${xDiff}`;
     const htmlResult = document.getElementById("output");

@@ -1,0 +1,14 @@
+{
+    "compilerOptions": {
+      "target": "ES2022",                    // or higher (ES2015, ES2020, etc.)
+      "module": "ES2022",                    // Use ES6 modules for browser compatibility
+      "moduleResolution": "node",
+      "esModuleInterop": true,            // Enables interoperability between CommonJS and ES Modules
+      "forceConsistentCasingInFileNames": true,
+      "strict": true,                     // Enables strict type-checking options
+      "skipLibCheck": true,
+      "outDir": "./dist",                 // Output directory for compiled JS
+      // ...any other options you have
+    },
+    "include": ["./**/*"]             // Adjust according to your project structure
+  }
