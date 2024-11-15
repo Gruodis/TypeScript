@@ -16,10 +16,19 @@ class Products {
   // Method to get formatted date
   getFormattedDate(
     locale: string = "lt-LT",
-    options?: Intl.DateTimeFormatOptions
+    defaultOptions: Intl.DateTimeFormatOptions = {
+      year: "numeric",
+      month: "long",
+      day: "numeric",
+      hour: "2-digit",
+      minute: "2-digit",
+      second: "2-digit",
+      hour12: false,
+    }
   ): string {
     const date = new Date(this._date);
-    return date.toLocaleDateString(locale, options);
+
+    return date.toLocaleDateString(locale, defaultOptions);
   }
 
   priceWithTax() {
@@ -101,30 +110,41 @@ interface ProductData {
   _date: Date;
 }
 
-const sortByDate = () => {
-  warehouse.sort((a, b) => {
-    const dateA = new Date(a.date).getTime();
-    const dateB = new Date(b.date).getTime();
-    return dateB - dateA;
+function sortByDate(order: "asc" | "desc" = "asc") {
+  warehouse.forEach((product) => {
+    console.log(`product date: ${product.date}`); // Debugging log
   });
-};
 
-const sortByPrice = () => {
-  warehouse.sort((a, b) => {
-    const priceA = a.priceWithTax();
-    const priceB = b.priceWithTax();
-    return priceB - priceA;
-  });
-};
-
-const sortByName = () => {
-  warehouse.sort((a, b) => {
-    if (a.name < b.name) {
-      return -1;
-    } else if (a.name > b.name) {
-      return 1;
+  warehouse.sort((a: Products, b: Products): number => {
+    const dateA: number = new Date(a.date).getTime();
+    const dateB: number = new Date(b.date).getTime();
+    console.log(`dateA: ${dateA}, dateB: ${dateB}`); // Debugging log
+    if (order === "asc") {
+      return dateA - dateB;
     } else {
-      return 0;
+      return dateB - dateA;
+    }
+  });
+}
+
+// Update the sortByPrice function to accept a sorting order parameter
+function sortByPrice(order: "asc" | "desc" = "asc") {
+  warehouse.sort((a, b) => {
+    if (order === "asc") {
+      return a.priceWithTax() - b.priceWithTax();
+    } else {
+      return b.priceWithTax() - a.priceWithTax();
+    }
+  });
+}
+
+// Update the sortByName function to accept a sorting order parameter
+const sortByName = (order: "asc" | "desc" = "asc") => {
+  warehouse.sort((a, b) => {
+    if (order === "asc") {
+      return a.name.localeCompare(b.name);
+    } else {
+      return b.name.localeCompare(a.name);
     }
   });
 };
@@ -132,73 +152,154 @@ const sortByName = () => {
 const sortByDateBtn = document.getElementById(
   "sortByDate"
 ) as HTMLButtonElement;
+
 const sortByPriceBtn = document.getElementById(
   "sortByPrice"
 ) as HTMLButtonElement;
+
 const sortByNameBtn = document.getElementById(
   "sortByName"
 ) as HTMLButtonElement;
 
-sortByDateBtn.addEventListener("click", () => {
-  sortByDate();
-  displayProducts();
-});
+const resetSortingBtn = document.getElementById(
+  "resetSorting"
+) as HTMLButtonElement;
+
+// i want to select span element inside sortByDateBtn element
+const sortByDateSpan = sortByDateBtn.querySelector("span") as HTMLSpanElement;
+const sortByPriceSpan = sortByPriceBtn.querySelector("span") as HTMLSpanElement;
+const sortByNameSpan = sortByNameBtn.querySelector("span") as HTMLSpanElement;
+
+const resetSorting = () => {
+  // warehouse = JSON.parse(localStorage.getItem("warehouse") || "[]");
+  const outputData = document.getElementById(
+    "products-list"
+  ) as HTMLUListElement;
+
+  if (outputData) {
+    outputData.innerHTML = "";
+    warehouse = [];
+    loadWarehouse();
+    displayProducts();
+  }
+};
+
+if (resetSortingBtn && warehouse.length > 0) {
+  resetSortingBtn.addEventListener("click", resetSorting);
+}
+let isDateAscending = true; // Flag to track date sorting order
+
+if (sortByDateBtn && warehouse.length > 0) {
+  sortByDateBtn.addEventListener("click", () => {
+    if (isDateAscending) {
+      sortByDate("asc"); // Sort from earliest to latest
+      sortByDateSpan.innerHTML = "↓";
+    } else {
+      sortByDate("desc"); // Sort from latest to earliest
+      sortByDateSpan.innerHTML = "↑";
+    }
+    displayProducts();
+    isDateAscending = !isDateAscending; // Toggle the date sorting order
+  });
+}
+
+let isPriceAscending: boolean = true; // Flag to track price sorting order
 
 // check if button exists
 if (sortByPriceBtn && warehouse.length > 0) {
   sortByPriceBtn.addEventListener("click", () => {
-    sortByPrice();
+    if (isPriceAscending) {
+      sortByPrice("asc"); // Sort from low to high
+      sortByPriceSpan.innerHTML = "↓";
+    } else {
+      sortByPrice("desc"); // Sort from high to low
+      sortByPriceSpan.innerHTML = "↑";
+    }
     displayProducts();
+    isPriceAscending = !isPriceAscending; // Toggle the price sorting order
   });
 }
 
-// check if button exists
+let isAscending: boolean = true; // Flag to track sorting order
+
 if (sortByNameBtn && warehouse.length > 0) {
   sortByNameBtn.addEventListener("click", () => {
-    sortByName();
+    if (isAscending) {
+      sortByName("asc"); // Sort from A to Z
+      sortByNameSpan.innerHTML = "A-Z";
+    } else {
+      sortByName("desc"); // Sort from Z to A
+      sortByNameSpan.innerHTML = "Z-A";
+    }
     displayProducts();
+    isAscending = !isAscending; // Toggle the sorting order
   });
 }
+
+const deleteProduct = (index: number) => {
+  warehouse.splice(index, 1);
+  saveWarehouse();
+  displayProducts();
+};
+
+const createProductListItems = (product: Products, index: number) => {
+  const outputData = document.getElementById("products-list") as HTMLDivElement;
+  const productDiv = document.createElement("li") as HTMLLIElement;
+  productDiv.className = "list-group-item";
+  productDiv.innerHTML = `
+    <h3>${product.name} index ${index}</h3>
+    <p>Price: $${product.priceWithTax().toFixed(2)}</p>
+    <p>Quantity: ${product["_quantity"]}</p>
+    <p>Date Added: ${product.getFormattedDate("en-GB")}</p>
+  `;
+
+  // Create and append the delete button
+  const deleteButton = createDeleteButton(index);
+  productDiv.appendChild(deleteButton);
+
+  outputData.appendChild(productDiv);
+};
+
+const createDeleteButton = (index: number): HTMLButtonElement => {
+  const deleteButton = document.createElement("button") as HTMLButtonElement;
+  deleteButton.className = "btn btn-danger";
+  deleteButton.innerHTML = "Delete";
+  deleteButton.addEventListener("click", () => {
+    deleteProduct(index);
+  });
+  return deleteButton;
+};
 
 const displayProducts = () => {
   const outputData = document.getElementById("products-list") as HTMLDivElement;
   if (outputData && warehouse.length > 0) {
     outputData.innerHTML = "";
-    // stringify data
-    // outputData.innerHTML = JSON.stringify(warehouse, null, 2);
 
-    warehouse.forEach((product: Products) => {
-      console.log(typeof product.date);
-      const productDiv = document.createElement("li");
-      productDiv.className = "list-group-item";
-      productDiv.innerHTML = `
-                    <h3>${product.name}</h3>
-                    <p>Price: $${product.priceWithTax().toFixed(2)}</p>
-                    <p>Quantity: ${product["_quantity"]}</p>
-                    <p>Date Added: ${product.getFormattedDate("lt-LT", {
-                      year: "numeric",
-                      month: "long",
-                      day: "numeric",
-                      hour: "2-digit",
-                      minute: "2-digit",
-                      second: "2-digit",
-                      hour12: true,
-                    })}</p>
-                `;
-      outputData.appendChild(productDiv);
+    warehouse.forEach((product: Products, index: number) => {
+      createProductListItems(product, index);
+      // create delete button
+      // createDeleteButton(index);
     });
+  } else {
+    outputData.innerHTML = "<p>No products available</p>";
   }
 };
 
+const clearProducts = () => {
+  localStorage.removeItem("warehouse");
+  warehouse = [];
+  displayProducts();
+};
+
+const clearProductsBtn = document.getElementById(
+  "removeAllProducts"
+) as HTMLButtonElement;
+
+if (clearProductsBtn) {
+  clearProductsBtn.addEventListener("click", clearProducts);
+}
 // Display products on page load
-displayProducts();
-
-// data.forEach((product: ProductData) => {
-//     const temp = new Products(product._name, product._price, product._quantity);
-
-//     parsedProducts.push(
-//         temp
-//     );
-// });
-
-//console.log(`parsed data frpm api`, data[0].name);
+window.onload = () => {
+  displayProducts();
+  console.log("Page loaded");
+};

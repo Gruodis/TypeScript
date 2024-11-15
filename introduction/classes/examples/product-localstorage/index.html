@@ -59,6 +59,9 @@
                 <button type="button" class="btn btn-primary" id="addProductBtn">
                   Add product
                 </button>
+                <button type="button" class="btn btn-danger" id="removeAllProducts">
+                  REMOVE ALL PRODUCTS
+                </button>
               </div>
             </div>
           </div>
@@ -66,9 +69,10 @@
         </div>
         <div class="col-6">
             <div class="d-flex">
-                <button id="sortByDate" class="btn btn-secondary" type="button">Sort by date</button>
-                <button id="sortByPrice" class="btn btn-secondary" type="button">Sort by price</button>
-                <button id="sortByName" class="btn btn-secondary" type="button">Sort by Name</button>
+                <button id="sortByDate" class="btn btn-secondary" type="button">Sort by date <span>↑</span></button>
+                <button id="sortByPrice" class="btn btn-secondary" type="button">Sort by price <span>↑</span></button>
+                <button id="sortByName" class="btn btn-secondary" type="button">Sort by Name <span>A-Z</span></button>
+                <button id="resetSorting" class="btn btn-primary" type="button">Reset sorting</button>
             </div>
             <ul id="products-list" class="list-group"></ul>
           </div>
