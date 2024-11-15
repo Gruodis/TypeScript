@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH"
+      crossorigin="anonymous"
+    />
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
+      crossorigin="anonymous"
+    ></script>
+  </head>
+  <body>
+    <main>
+      <div class="container">
+        <div class="row mt-3">
+          <div class="col-6">
+            <div class="card">
+              <h5 class="card-header">Add product</h5>
+              <div class="card-body">
+                <div class="mb-3">
+                  <label for="name" class="form-label">Name</label>
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="name"
+                    name="name"
+                    required
+                  />
+                </div>
+                <div class="mb-3">
+                  <label for="price" class="form-label">Price</label>
+                  <input
+                    type="number"
+                    class="form-control"
+                    id="price"
+                    name="price"
+                    required
+                  />
+                </div>
+                <div class="mb-3">
+                  <label for="quantity" class="form-label">Quantity</label>
+                  <input
+                    type="number"
+                    class="form-control"
+                    id="quantity"
+                    name="quantity"
+                    required
+                  />
+                </div>
+                <div class="mb-3">
+                <button type="button" class="btn btn-primary" id="addProductBtn">
+                  Add product
+                </button>
+              </div>
+            </div>
+          </div>
+        
+        </div>
+        <div class="col-6">
+            <div class="d-flex">
+                <button id="sortByDate" class="btn btn-secondary" type="button">Sort by date</button>
+                <button id="sortByPrice" class="btn btn-secondary" type="button">Sort by price</button>
+                <button id="sortByName" class="btn btn-secondary" type="button">Sort by Name</button>
+            </div>
+            <ul id="products-list" class="list-group"></ul>
+          </div>
+      </div>
+    </main>
+
+    <script src="products-app.js"></script>
+  </body>
+</html>
