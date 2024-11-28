@@ -16,6 +16,9 @@ class Products {
     get date() {
         return this._date;
     }
+    get quantity() {
+        return this._quantity;
+    }
     // Method to get formatted date
     getFormattedDate(locale = "lt-LT", defaultOptions = {
         year: "numeric",
@@ -37,6 +40,7 @@ class Products {
 const inputName = document.getElementById("name");
 const inputPrice = document.getElementById("price");
 const inputQuantity = document.getElementById("quantity");
+const total = document.getElementById("total");
 // get button element
 const addProductBtn = document.getElementById("addProductBtn");
 // Initialize warehouse from localStorage or empty array
@@ -81,6 +85,7 @@ addProductBtn.addEventListener("click", () => {
     inputPrice.value = "";
     inputQuantity.value = "";
     displayProducts();
+    countTotal();
 });
 function sortByDate(order = "asc") {
     warehouse.forEach((product) => {
@@ -191,17 +196,28 @@ const deleteProduct = (index) => {
     warehouse.splice(index, 1);
     saveWarehouse();
     displayProducts();
+    countTotal();
 };
 const createProductListItems = (product, index) => {
     const outputData = document.getElementById("products-list");
     const productDiv = document.createElement("li");
     productDiv.className = "list-group-item";
-    productDiv.innerHTML = `
-    <h3>${product.name} index ${index}</h3>
-    <p>Price: $${product.priceWithTax().toFixed(2)}</p>
-    <p>Quantity: ${product["_quantity"]}</p>
-    <p>Date Added: ${product.getFormattedDate("en-GB")}</p>
-  `;
+    // Create and append the product name
+    const productName = document.createElement("h3");
+    productName.textContent = `${product.name} index ${index}`;
+    productDiv.appendChild(productName);
+    // Create and append the product price
+    const productPrice = document.createElement("p");
+    productPrice.textContent = `Price: $${product.priceWithTax().toFixed(2)}`;
+    productDiv.appendChild(productPrice);
+    // Create and append the product quantity
+    const productQuantity = document.createElement("p");
+    productQuantity.textContent = `Quantity: ${product["_quantity"]}`;
+    productDiv.appendChild(productQuantity);
+    // Create and append the product date
+    const productDate = document.createElement("p");
+    productDate.textContent = `Date Added: ${product.getFormattedDate("en-GB")}`;
+    productDiv.appendChild(productDate);
     // Create and append the delete button
     const deleteButton = createDeleteButton(index);
     productDiv.appendChild(deleteButton);
@@ -210,7 +226,7 @@ const createProductListItems = (product, index) => {
 const createDeleteButton = (index) => {
     const deleteButton = document.createElement("button");
     deleteButton.className = "btn btn-danger";
-    deleteButton.innerHTML = "Delete";
+    deleteButton.textContent = "Delete";
     deleteButton.addEventListener("click", () => {
         deleteProduct(index);
     });
@@ -222,8 +238,6 @@ const displayProducts = () => {
         outputData.innerHTML = "";
         warehouse.forEach((product, index) => {
             createProductListItems(product, index);
-            // create delete button
-            // createDeleteButton(index);
         });
     }
     else {
@@ -238,6 +252,18 @@ const clearProducts = () => {
 const clearProductsBtn = document.getElementById("removeAllProducts");
 if (clearProductsBtn) {
     clearProductsBtn.addEventListener("click", clearProducts);
+}
+const countTotal = () => {
+    let totalSum = 0;
+    if (total) {
+        warehouse.forEach((product) => {
+            totalSum += product.priceWithTax() * product.quantity;
+        });
+    }
+    return (total.innerHTML = totalSum.toFixed(2));
+};
+if (total) {
+    total.innerHTML = `Total products: ${countTotal()}`;
 }
 // Display products on page load
 window.onload = () => {
